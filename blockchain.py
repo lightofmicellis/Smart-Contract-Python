@@ -1,16 +1,21 @@
-# Importing the Various Modules and Libraries #
+#
+# Importing the Various Modules and Libraries 
+# 
 
 import sys
 import hashlib
 import json
 from time import time
+from urllib import response
 from uuid import uuid4
 from flask import Flask, jsonify, request
 import flask
 import requests
 from urllib.parse import urlparse
 
-# Declaring the Class in Python #
+#
+# Declaring the Class in Python
+#  
 
 class Blockchain(object):
     difficulty_target = "0000"
@@ -34,8 +39,10 @@ class Blockchain(object):
 
     # The preceding creates a class name blockchain with 
     # two method: hash_block and __init__
-
-    # Finding the Nonce #
+    
+    #
+    # Finding the Nonce 
+    # 
 
     # Use PoW to find the nonce for the current block
 
@@ -71,8 +78,10 @@ class Blockchain(object):
         content_hash = hashlib.sha256(content).hexdigest()
         # check if the hash meets the difficulty target 
         return content_hash[:len(self.difficulty_target)] == self.difficult_target
-
-    # Appending the Block to the Blockchain #
+    
+    #
+    # Appending the Block to the Blockchain 
+    # 
 
 
     # Once the nonce for a block has been found, you can now write the method to 
@@ -97,8 +106,10 @@ class Blockchain(object):
 
     # When the block is added to the blockchain, the current timestamp is also added 
     # to the block.
-
-    # Adding Transactions #
+    
+    #
+    # Adding Transactions 
+    #
 
     # The next method we will add to the Blockchain class is the add_transaction() 
     # method :
@@ -123,8 +134,9 @@ class Blockchain(object):
         # return the last block in the blockchain
         return self.chain[-1]
 
-
-# Exposing the Blockchain Class as a Rest API #
+#
+# Exposing the Blockchain Class as a Rest API 
+#
 
 # Our Blockchain class is now complete, and so let’s now expose it as a REST API using Flask. 
 # Append the following statements to the end of the blockchain.py file:
@@ -132,12 +144,27 @@ class Blockchain(object):
 app = flask(__name__)
 
 # Generate a globally unique address for this node.
-
 node_identifier = str(uuid4()).replace('-', '')
 
 # Instantiate the Blockchain
-
 blockchain = Blockchain()
+
+#
+#Obtaining the Full Blockchain
+#
+
+# For the REST API, we want tocreate a route for users toobtain the current 
+# blockchain, so append the following statements to the end of blockchain.py :
+
+# return the entire blockchain
+@app.route('/blockchain' methods= ['GET'])
+def full_chain():
+    response = {
+        'chain': blockchain.chain,
+        'length': len(blockchain.chain)
+    }
+    return jsonify(response), 200    
+
 
 
 
