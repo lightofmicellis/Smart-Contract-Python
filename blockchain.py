@@ -1,12 +1,12 @@
 # Importing the Various Modules and Libraries #
-from ast import Return
-from curses import ALL_MOUSE_EVENTS
+
 import sys
 import hashlib
 import json
 from time import time
 from uuid import uuid4
 from flask import Flask, jsonify, request
+import flask
 import requests
 from urllib.parse import urlparse
 
@@ -122,6 +122,26 @@ class Blockchain(object):
     def last_block(self):
         # return the last block in the blockchain
         return self.chain[-1]
+
+
+# Exposing the Blockchain Class as a Rest API #
+
+# Our Blockchain class is now complete, and so let’s now expose it as a REST API using Flask. 
+# Append the following statements to the end of the blockchain.py file:
+
+app = flask(__name__)
+
+# Generate a globally unique address for this node.
+
+node_identifier = str(uuid4()).replace('-', '')
+
+# Instantiate the Blockchain
+
+blockchain = Blockchain()
+
+
+
+
 
 
 
